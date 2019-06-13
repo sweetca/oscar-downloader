@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 8082
+
+job:
+  type: 102
+  podName: oscar-downloader-1
+  checkCron: 0 */1 * * * * # once a minute
+
+application:
+  git:
+    repository-dir: /tmp/codescoop/repositories
+    storage-limit: 200Gb
+    maxParallelClones: 5
+    maxParallelRepoProcessors: 10
+    commitsDiff: false
+  mongo:
+    parallel-connections: 10
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.springframework.transaction.interceptor: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: INFO
+    org.springframework.data: INFO
+    com.oscar: INFO
+

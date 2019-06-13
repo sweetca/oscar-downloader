@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://codescoop:PASSWORD@localhost:27017/oss
+
+application:
+  git:
+    repository-dir: ${user.home}/components
+    storage-limit: 2Gb
+  mongo:
+    parallel-connections: 2
+
+job:
+  url: http://localhost:8081
+  checkCron: "*/5 * * * * *" # each 5 seconds
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.springframework.transaction.interceptor: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: INFO
+    org.springframework.data: DEBUG
+    com.oscar: DEBUG

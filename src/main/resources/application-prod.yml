@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${mongo.login}:${mongo.pass}@127.0.0.1:27017/oss
+
+application:
+  git:
+    repository-dir: ${user.home}/components
+    storage-limit: 20Gb
+  mongo:
+    parallel-connections: 2
+
+job:
+  url: http://localhost:8081
+  checkCron: 0 */1 * * * * # once 1 minute
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.springframework.transaction.interceptor: INFO
+    org.springframework.data.mongodb.core.MongoTemplate: INFO
+    org.springframework.data: INFO
+    com.oscar: INFO
