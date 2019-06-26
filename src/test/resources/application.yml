@@ -5,7 +5,7 @@ spring:
 
 application:
   git:
-    repository-dir: /tmp/test/components
+    repository-dir: /tmp/oscar-test/repositories
     storage-limit: 2Gb
   mongo:
     parallel-connections: 2
