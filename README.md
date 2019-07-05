@@ -19,7 +19,7 @@ POST /download
 		"gitUrl":"https://gitlab-ci-token:token@gitlab.com/sweetca/logger.git",
 		"accessToken":"token",
 		"userName":"sweetca",
-		"gitId":"777",
+		"componentId":"777",
 		"gitBranch":"multi_file"
 	}
 }

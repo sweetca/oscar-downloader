@@ -1,10 +1,10 @@
 package com.oscar.downloader.model.job;
 
 public enum PayloadType {
-    componentId,
+    component,
     componentPath,
     gitUrl,
     gitBranch,
-    accessToken,
-    userName
+    gitToken,
+    gitName
 }

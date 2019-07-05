@@ -18,9 +18,9 @@ public class Job {
     @JsonIgnore
     public String getComponentPath() {
         if (payload != null && payload.size() > 0) {
-            String gitId = (String) payload.get(PayloadType.componentPath.name());
-            if (gitId != null) {
-                return gitId.trim();
+            String componentPath = (String) payload.get(PayloadType.componentPath.name());
+            if (componentPath != null) {
+                return componentPath.trim();
             }
         }
         return null;
@@ -29,9 +29,9 @@ public class Job {
     @JsonIgnore
     public String getComponentId() {
         if (payload != null && payload.size() > 0) {
-            String gitId = (String) payload.get(PayloadType.componentId.name());
-            if (gitId != null) {
-                return gitId.trim();
+            String componentId = (String) payload.get(PayloadType.component.name());
+            if (componentId != null) {
+                return componentId.trim();
             }
         }
         return null;
@@ -62,7 +62,7 @@ public class Job {
     @JsonIgnore
     public String getAccessToken() {
         if (payload != null && payload.size() > 0) {
-            String accessToken = (String) payload.get(PayloadType.accessToken.name());
+            String accessToken = (String) payload.get(PayloadType.gitToken.name());
             if (accessToken != null) {
                 return accessToken.trim();
             }
@@ -73,7 +73,7 @@ public class Job {
     @JsonIgnore
     public String getUserName() {
         if (payload != null && payload.size() > 0) {
-            String userName = (String) payload.get(PayloadType.userName.name());
+            String userName = (String) payload.get(PayloadType.gitName.name());
             if (userName != null) {
                 return userName.trim();
             }
