@@ -1,11 +1,7 @@
 package com.oscar.downloader.service.storage;
 
-import com.oscar.downloader.configuration.GitProperties;
-import com.oscar.downloader.model.ComponentType;
 import com.oscar.downloader.model.GitRepo;
 import com.oscar.downloader.model.job.Job;
-import com.oscar.downloader.utils.StorageUtils;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
@@ -13,9 +9,9 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,26 +26,14 @@ public class LocalGitRepoStorage implements GitRepoStorage {
 
     private final String origin = "origin/";
 
-    private final GitProperties gitProperties;
-
-    LocalGitRepoStorage(GitProperties gitProperties) {
-        this.gitProperties = gitProperties;
-    }
-
-    @PostConstruct
-    @SneakyThrows
-    public void createCloningJobProcessor() {
-        log.info("Cleaning directory {}", gitProperties.getRepositoryDir());
-        Path repoDir = Paths.get(gitProperties.getRepositoryDir());
-        StorageUtils.deleteDirectory(repoDir);
-        StorageUtils.createDirectory(repoDir);
+    LocalGitRepoStorage() {
     }
 
     @Override
     public Mono<GitRepo> proceedComponent(Job job) {
-        ComponentType type = ComponentType.fromString(job.getComponentType());
         String url = job.getGitUrl();
-        String id = job.getGitId();
+        String id = job.getComponentId();
+        String path = job.getComponentPath();
         String branch = job.getGitBranch();
         String accessToken = job.getAccessToken();
         String userName = job.getUserName();
@@ -58,20 +42,23 @@ public class LocalGitRepoStorage implements GitRepoStorage {
                 .aRepo()
                 .id(id)
                 .url(url)
-                .type(type)
                 .branch(branch)
-                .path(getRepoPath(type, id))
+                .path(Paths.get(path))
                 .accessToken(accessToken)
                 .userName(userName)
                 .create();
 
         return Mono.fromCallable(() -> clone(repo))
-                .doOnSuccess(gitRepo -> log.info("Completed cloning of repo {}", repo))
+                .doOnSuccess(gitRepo -> log.info("Completed cloning of repo {}", repo.getUrl()))
                 .doOnError(e -> {
                     log.error("Failed to clone repo {} due to {}", repo, e);
-                    StorageUtils.deleteDirectory(repo.getPath());
+                    try {
+                        FileSystemUtils.deleteRecursively(repo.getPath());
+                    } catch (IOException ex) {
+                        log.debug("Failed to clean dir " + repo.getPath().toString(), ex);
+                    }
                 })
-                .onErrorResume(throwable -> Mono.empty());
+                .onErrorResume(Mono::error);
     }
 
     private GitRepo clone(GitRepo repo) throws GitAPIException, IOException {
@@ -136,10 +123,6 @@ public class LocalGitRepoStorage implements GitRepoStorage {
             log.error("Error url encode {}", value, e);
         }
         return value;
-    }
-
-    private Path getRepoPath(ComponentType type, String gitId) {
-        return Paths.get(gitProperties.getRepositoryDir(), type.name(), gitId);
     }
 
     private boolean createRepoDir(Path path) throws IOException {

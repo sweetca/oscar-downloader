@@ -6,19 +6,9 @@ server:
   port: 8082
 
 job:
-  type: 102
+  type: 10
   podName: oscar-downloader-1
   checkCron: 0 */1 * * * * # once a minute
-
-application:
-  git:
-    repository-dir: /tmp/oscar/repositories
-    storage-limit: 200Gb
-    maxParallelClones: 5
-    maxParallelRepoProcessors: 10
-    commitsDiff: false
-  mongo:
-    parallel-connections: 10
 
 logging:
   level:

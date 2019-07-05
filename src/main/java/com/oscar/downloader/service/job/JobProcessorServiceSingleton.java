@@ -24,7 +24,7 @@ public class JobProcessorServiceSingleton implements JobProcessorService {
     public Mono<Job> processJob(Job job) {
         synchronized (this) {
             if (this.currentJobId != null) {
-                log.info("Currently busy with another job {}", this.currentJobId);
+                log.error("job under progress {}, concurrent leak!", this.currentJobId);
                 return Mono.empty();
             }
             this.currentJobId = job.getId();
@@ -34,13 +34,14 @@ public class JobProcessorServiceSingleton implements JobProcessorService {
 
         return Mono.just(job)
                 .flatMap(j -> this.gitRepoStorage.proceedComponent(job))
-                .doOnError(throwable -> log.error("Failed job " + job.getId() + " {}", throwable))
+                .doOnError(throwable -> log.error("Failed job : " + job.getId(), throwable.getMessage()))
+                .onErrorResume(Mono::error)
                 .doOnTerminate(this::finishJob)
                 .then(Mono.just(job));
     }
 
     private synchronized void finishJob() {
-        log.info("Completed job {}", this.currentJobId);
+        log.debug("Completed job {}", this.currentJobId);
         this.currentJobId = null;
     }
 

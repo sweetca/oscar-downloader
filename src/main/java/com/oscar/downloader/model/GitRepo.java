@@ -15,8 +15,6 @@ public class GitRepo {
 
     private String branch;
 
-    private ComponentType type;
-
     private Path path;
 
     private String accessToken;

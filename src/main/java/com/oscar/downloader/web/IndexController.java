@@ -24,7 +24,7 @@ public class IndexController {
         this.jobProcessorService = jobProcessorService;
     }
 
-    @GetMapping(path = "")
+    @GetMapping(path = "/")
     public ResponseEntity<?> index() {
         return ResponseEntity.ok(new Date().toString());
     }

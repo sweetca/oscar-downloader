@@ -2,14 +2,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://oscar:oscar@127.0.0.1:27017/oss
-
-application:
-  git:
-    repository-dir: /tmp/oscar-test/repositories
-    storage-limit: 2Gb
-  mongo:
-    parallel-connections: 2
-
 job:
   url: http://localhost:8081
   checkCron: 0 */1 * * * *

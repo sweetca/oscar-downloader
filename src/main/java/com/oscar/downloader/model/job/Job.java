@@ -16,9 +16,20 @@ public class Job {
     private Map<String, Object> payload = new HashMap<>();
 
     @JsonIgnore
-    public String getGitId() {
+    public String getComponentPath() {
         if (payload != null && payload.size() > 0) {
-            String gitId = (String) payload.get(PayloadType.gitId.name());
+            String gitId = (String) payload.get(PayloadType.componentPath.name());
+            if (gitId != null) {
+                return gitId.trim();
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public String getComponentId() {
+        if (payload != null && payload.size() > 0) {
+            String gitId = (String) payload.get(PayloadType.componentId.name());
             if (gitId != null) {
                 return gitId.trim();
             }
@@ -32,17 +43,6 @@ public class Job {
             String gitUrl = (String) payload.get(PayloadType.gitUrl.name());
             if (gitUrl != null) {
                 return gitUrl.trim();
-            }
-        }
-        return null;
-    }
-
-    @JsonIgnore
-    public String getComponentType() {
-        if (payload != null && payload.size() > 0) {
-            String componentType = (String) payload.get(PayloadType.componentType.name());
-            if (componentType != null) {
-                return componentType.trim();
             }
         }
         return null;

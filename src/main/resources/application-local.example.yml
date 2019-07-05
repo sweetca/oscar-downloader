@@ -1,18 +1,11 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://codescoop:PASSWORD@localhost:27017/oss
-
-application:
-  git:
-    repository-dir: /tmp/oscar/repositories
-    storage-limit: 2Gb
-  mongo:
-    parallel-connections: 2
+      uri: mongodb://LOGIN:PASSWORD@localhost:27017/oss
 
 job:
   url: http://localhost:8081
-  checkCron: "*/5 * * * * *" # each 5 seconds
+  checkCron: 0/10 * * * * * # once 10 sec
 
 logging:
   level:

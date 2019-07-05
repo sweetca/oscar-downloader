@@ -1,17 +1,5 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb://${MONGO_LOGIN}:${MONGO_PASS}@127.0.0.1:27017/oss
-
-application:
-  git:
-    repository-dir: /tmp/oscar/repositories
-    storage-limit: 20Gb
-  mongo:
-    parallel-connections: 2
-
 job:
-  url: http://localhost:8081
+  url: http://127.0.0.1:8081
   checkCron: 0 */1 * * * * # once 1 minute
 
 logging:
