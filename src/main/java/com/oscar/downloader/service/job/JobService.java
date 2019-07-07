@@ -47,7 +47,7 @@ public class JobService {
         if (this.jobProcessorService.canDoAnotherJob()) {
             log.debug("Start checkForNewJob");
             findNewJob()
-                    .doOnError(e -> log.error("Cannot get job. {}", e.getMessage()))
+                    .doOnError(e -> log.debug("Cannot get job. {}", e.getMessage()))
                     .doOnNext(job -> log.info("Received job {}", job.getId()))
                     .flatMap(this.jobProcessorService::processJob)
                     .doOnSuccess(job -> finishJob(job.getId()))
