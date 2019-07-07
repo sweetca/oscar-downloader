@@ -1,5 +1,5 @@
 job:
-  url: http://127.0.0.1:8081
+  url: http://oscar-controller:8081
   checkCron: 0 */1 * * * * # once 1 minute
 
 logging:
