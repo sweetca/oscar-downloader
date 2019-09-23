@@ -1,6 +1,8 @@
 # oscar-downloader
 Git unit to perform actions over repositories code source
 
+#### License MIT
+
 # How to start
 1. Install and start MongoDB
 2. Customize application.git.repository_dir in application.yml - a path to directory where git crawler checks out repositories.
